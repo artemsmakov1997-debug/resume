@@ -10,3 +10,27 @@ body{zoom:0.7125}
 /* New cutout keeps the complete portrait visible. */
 .portrait{object-fit:contain;object-position:center bottom}
 
+
+
+/* Portrait first, introduction second; keep the same order on mobile. */
+.hero{grid-template-columns:1fr 1.04fr;gap:48px}
+.hero-copy{min-width:0}
+.project-group.showcase{margin-top:6px}
+.project-group.showcase .group-title{font-size:13px;color:var(--muted);letter-spacing:1.2px}
+.group-header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:16px}
+.group-header .group-title{margin:0}
+.preview-toggle{flex-shrink:0;background:none;border:1px solid var(--line);border-radius:2px;font-size:12px;padding:10px 13px;transition:border-color .2s,color .2s}
+.preview-toggle:hover{border-color:var(--orange);color:var(--orange)}
+.showcase .project-visual{background:#242424;border-radius:3px}
+.project-preview{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;pointer-events:none}
+.showcase .project-visual:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#0009);pointer-events:none}
+.preview-label{position:absolute;left:15px;bottom:15px;color:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;z-index:1}
+.preview-expand{position:absolute;right:12px;bottom:12px;width:28px;height:28px;display:grid;place-items:center;background:#ffffff25;color:white;border:1px solid #ffffff70;border-radius:50%;z-index:1}
+.showcase .project-caption{font-size:20px;line-height:1.25;font-weight:600;letter-spacing:-.4px;align-items:flex-start;gap:14px;padding-top:16px}
+.showcase .project-caption>span:last-child{flex-shrink:0}
+.project-group.production{margin-top:64px;padding-top:34px;border-top:1px solid var(--line)}
+.production .group-title{font-size:clamp(27px,3vw,39px);line-height:1.12;letter-spacing:-1.3px;max-width:850px}
+.production .group-title .count{font-size:16px;white-space:nowrap;letter-spacing:0}
+.production .project-grid{margin-top:24px}
+@media(max-width:1050px){.hero{gap:24px}.showcase .project-caption{font-size:17px}}
+@media(max-width:720px){.hero{grid-template-columns:1fr;gap:28px}.portrait-stage{align-self:auto}.hero-copy{padding-bottom:10px}.group-header{flex-wrap:wrap;gap:14px}.showcase .project-caption{font-size:21px}.project-group.production{margin-top:42px;padding-top:25px}.production .group-title{font-size:29px;line-height:1.15;letter-spacing:-.8px}.preview-toggle{min-height:44px}.showcase .project-grid{gap:32px}}
