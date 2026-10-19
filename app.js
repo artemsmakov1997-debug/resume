@@ -156,3 +156,39 @@ document.querySelectorAll('[data-open-panel]').forEach(link=>link.addEventListen
  event.preventDefault();
  showResumePanel(link.dataset.openPanel);
 }));
+
+/* Mobile card navigation supplements native touch swiping. */
+function attachMobileCarousel(container){
+ if(!container||container.children.length<2)return;
+ const controls=el('div','mobile-carousel-controls');
+ const count=el('span','mobile-carousel-count');
+ const previous=el('button','', '←'),next=el('button','','→');
+ previous.type='button';next.type='button';
+ previous.setAttribute('aria-label','Предыдущая карточка');
+ next.setAttribute('aria-label','Следующая карточка');
+ controls.append(count,previous,next);
+ container.insertAdjacentElement('afterend',controls);
+ const items=[...container.children];
+ const getIndex=()=>{
+  const left=container.scrollLeft;
+  let closest=0,dist=Infinity;
+  items.forEach((item,i)=>{const delta=Math.abs(item.offsetLeft-items[0].offsetLeft-left);if(delta<dist){dist=delta;closest=i;}});
+  return closest;
+ };
+ const update=()=>{
+  const index=getIndex();
+  count.textContent=(index+1)+' / '+items.length;
+  previous.disabled=index===0;next.disabled=index===items.length-1;
+ };
+ function move(delta){
+  const index=Math.max(0,Math.min(items.length-1,getIndex()+delta));
+  container.scrollTo({left:items[index].offsetLeft-items[0].offsetLeft,behavior:reducedMotion.matches?'instant':'smooth'});
+ }
+ previous.addEventListener('click',()=>move(-1));
+ next.addEventListener('click',()=>move(1));
+ container.addEventListener('scroll',update,{passive:true});
+ window.addEventListener('resize',update);
+ update();
+}
+attachMobileCarousel(document.querySelector('#article-list'));
+attachMobileCarousel(document.querySelector('.video-section .production .project-grid'));
