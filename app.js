@@ -46,7 +46,7 @@ function openProject(item,group){
   }
   nodes.push(el('p',item.demo===false?'project-description':'demo-label',item.description||(group.type==='video'?'Демонстрационная обложка. Видеофайл пока не добавлен.':'Демонстрационная обложка из макета сайта. Реальная работа будет добавлена позже.')));
   if(item.url&&safeUrl(item.url)){
-    const link=el('a','button black','Открыть проект ↗');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';nodes.push(link);
+    const link=el('a','button black','Открыть проект');link.classList.add('arrow-link');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';nodes.push(link);
   }
   openViewer(item.title,group.title,nodes);
   if(item.videoParts?.length)loadVideoParts(item,nodes[0],nodes[1]);
@@ -69,12 +69,12 @@ data.groups.forEach(group=>{
       video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('loop','');video.setAttribute('aria-hidden','true');video.tabIndex=-1;
       if(!previewsPaused)video.setAttribute('autoplay','');
       video.poster=item.image;video.src=item.videoSrc;visual.append(video);previewVideos.push(video);
-      visual.append(el('span','preview-label','Без звука · Смотреть'),el('span','preview-expand','↗'));
+      visual.append(el('span','preview-label','Без звука · Смотреть'),el('span','preview-expand css-arrow',''));
     }else{
       const image=el('img');image.src=item.image;image.alt=item.title+(item.demo===false?'':' — демонстрационная обложка');image.loading='lazy';visual.append(image);
       if(group.type==='video')visual.append(el('span','play','▶'));
     }
-    const caption=el('span','project-caption');caption.append(el('span','',item.title),el('span','','↗'));
+    const caption=el('span','project-caption');caption.append(el('span','',item.title),el('span','css-arrow',''));
     card.append(visual,caption);card.addEventListener('click',()=>openProject(item,group));
     const details=el('button','project-details','Что было сделано');details.type='button';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-label','Что было сделано: '+item.title);
     details.addEventListener('click',()=>openViewer(item.title,'Что было сделано',[el('p','',item.workDone||'Описание появится чуть позже — автор готовит его.')]));
@@ -91,7 +91,7 @@ data.articles.forEach((article,index)=>{
  if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;image.loading='lazy';cover.append(image);}
  else {cover.append(el('span','text-placeholder','Макет и текст скоро появятся'));}
  const heading=el('h3','',article.title);
- const read=el('button','text-read',article.pending?'Скоро':'Читать текст ↗');read.type='button';read.disabled=!!article.pending;
+ const read=el('button','text-read',article.pending?'Скоро':'Читать текст');if(!article.pending)read.classList.add('arrow-link');read.type='button';read.disabled=!!article.pending;
  read.addEventListener('click',()=>{const nodes=[];if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;nodes.push(image);}article.paragraphs.forEach(p=>nodes.push(el(p.startsWith('«')?'blockquote':'p','',p)));openViewer(article.title,'Текст',nodes);});
  card.append(cover,heading,read);$('#article-list').append(card);
 });
