@@ -6,7 +6,7 @@ const dialog=$('#viewer');let previousFocus;let videoController;let videoObjectU
 function openViewer(title,kind,nodes){previousFocus=document.activeElement;$('#viewer-title').textContent=title;$('#viewer-kind').textContent=kind;$('#viewer-body').replaceChildren(...nodes);dialog.showModal();document.body.classList.add('modal-open');dialog.scrollTop=0;$('#viewer-title').focus();updatePreviewPlayback();}
 function closeViewer(){dialog.close();}
 $('.close').addEventListener('click',closeViewer);
-dialog.addEventListener('close',()=>{videoController?.abort();videoController=undefined;dialog.querySelectorAll('video').forEach(v=>{v.pause();v.removeAttribute('src');v.load();});if(videoObjectUrl){URL.revokeObjectURL(videoObjectUrl);videoObjectUrl=undefined;}document.body.classList.remove('modal-open');previousFocus?.focus();updatePreviewPlayback();});
+dialog.addEventListener('close',()=>{dialog.querySelectorAll('iframe').forEach(frame=>frame.remove());videoController?.abort();videoController=undefined;dialog.querySelectorAll('video').forEach(v=>{v.pause();v.removeAttribute('src');v.load();});if(videoObjectUrl){URL.revokeObjectURL(videoObjectUrl);videoObjectUrl=undefined;}document.body.classList.remove('modal-open');previousFocus?.focus();updatePreviewPlayback();});
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeViewer();}});
 function safeUrl(value){try{const u=new URL(value,location.href);return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}}
 // Silent moving covers. Playback can always be paused by the visitor.
@@ -34,7 +34,9 @@ function makePlayer(item){
 }
 function openProject(item,group){
   const nodes=[];
-  if(item.videoParts?.length){
+  if(item.rutubeId&&/^[a-f0-9]{32}$/.test(item.rutubeId)){
+    const frame=el('iframe','embedded-video');frame.src='https://rutube.ru/play/embed/'+item.rutubeId;frame.title=item.title;frame.allow='fullscreen; picture-in-picture';frame.allowFullscreen=true;nodes.push(frame);
+  }else if(item.videoParts?.length){
     const video=makePlayer(item),status=el('p','video-status','Загрузка видео — 0%');
     status.setAttribute('role','status');nodes.push(video,status);
   }else if(item.videoSrc&&safeUrl(item.videoSrc)){
@@ -79,7 +81,7 @@ data.groups.forEach(group=>{
     wrapper.append(card,details);grid.append(wrapper);
   });
   if(!showcase)section.append(header);
-  section.append(grid);$('#project-groups').append(section);
+  section.append(grid);$(group.type==='video'?'#video-groups':'#project-groups').append(section);
 });
 updatePreviewPlayback();
 
