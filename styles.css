@@ -229,3 +229,27 @@ html,body{max-width:100%;overflow-x:clip}
  .header .logo,.header .header-cta{display:none}
  .header nav{display:grid;width:100%;margin:0;padding:0;grid-template-columns:repeat(5,minmax(0,1fr))}
 }
+
+/* Mobile hero typography and full-width arrow-operated portfolios. */
+@media(max-width:720px){
+ .hero-copy{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);column-gap:13px;row-gap:0;align-items:center;padding-bottom:12px}
+ .hero-copy h1{grid-column:1;grid-row:1;font-size:clamp(43px,10.2vw,75px);line-height:.94;letter-spacing:-.068em;min-width:0}
+ .hero-copy .dash{grid-column:1/-1;grid-row:2;margin:19px 0 13px;width:44px}
+ .hero-copy .hero-role{grid-column:2;grid-row:1;align-self:center;font-size:clamp(16px,4.25vw,27px);line-height:1.2;letter-spacing:-.045em;min-width:0;margin:0;overflow-wrap:normal}
+ .hero-copy .hero-menu{grid-column:1/-1;grid-row:3;margin-top:6px}
+ .hero-copy .resume-dialog{grid-column:1/-1}
+ #article-list,.video-section .production .project-grid{grid-auto-columns:100%;gap:16px;padding:0 0 10px;scrollbar-width:none;scroll-padding-inline:0}
+ #article-list::-webkit-scrollbar,.video-section .production .project-grid::-webkit-scrollbar{display:none}
+ #article-list .text-cover{max-height:none}
+ .mobile-carousel-controls{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:12px 0 0}
+ .mobile-carousel-controls button{width:46px;height:42px;display:grid;place-items:center;border:1px solid var(--ink);border-radius:4px;background:var(--paper);color:var(--ink);box-shadow:0 2px 0 #d6d3cd;font-size:23px;line-height:1;transition:opacity .2s,transform .2s}
+ .mobile-carousel-controls button:not(:disabled):active{transform:translateY(2px);box-shadow:none}
+ .mobile-carousel-controls button:disabled{opacity:.3;cursor:default}
+ .mobile-carousel-count{margin-right:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+}
+@media(max-width:420px){
+ .hero-copy h1{font-size:clamp(39px,10.2vw,49px)}
+ .hero-copy .hero-role{font-size:clamp(15px,4.1vw,19px)}
+ #article-list,.video-section .production .project-grid{grid-auto-columns:100%;padding-right:0}
+}
+@media(min-width:721px){.mobile-carousel-controls{display:none}}
