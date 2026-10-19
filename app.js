@@ -166,8 +166,8 @@ function attachMobileCarousel(container){
  previous.type='button';next.type='button';
  previous.setAttribute('aria-label','Предыдущая карточка');
  next.setAttribute('aria-label','Следующая карточка');
- controls.append(count,previous,next);
- container.insertAdjacentElement('afterend',controls);
+ const hint=el('span','mobile-carousel-hint','Листать');controls.append(count,hint,previous,next);
+ container.insertAdjacentElement('beforebegin',controls);
  const items=[...container.children];
  const getIndex=()=>{
   const left=container.scrollLeft;
