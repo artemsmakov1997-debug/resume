@@ -312,3 +312,10 @@ html,body{max-width:100%;overflow-x:clip}
 .contact-links .contact-label{min-width:0;overflow-wrap:anywhere;word-break:normal}
 @media(max-width:1000px){.contact-links{grid-template-columns:1fr;gap:12px}.contact-links a{font-size:17px}}
 @media(max-width:720px){.contact-links a{min-height:63px;padding:12px 14px;font-size:clamp(15px,4.1vw,18px)}.contact-links .contact-icon{width:40px;height:40px;flex-basis:40px}}
+
+/* Override legacy footer span rule that was forcing contact text into 28px icons. */
+.contact-links a>.contact-label{display:block;flex:1 1 auto;width:auto;height:auto;min-width:0;padding:0;margin:0;border:0;border-radius:0;background:transparent;color:#fff;text-align:left;line-height:1.35;overflow-wrap:normal;word-break:normal;white-space:nowrap}
+.contact-links a>.contact-icon{display:grid;flex:0 0 38px;width:38px;height:38px;background:var(--orange);color:var(--ink)}
+@media(min-width:1001px) and (max-width:1250px){.contact-links a{font-size:14px;gap:9px;padding:13px 11px}}
+@media(max-width:720px){.contact-links a>.contact-icon{width:40px;height:40px;flex-basis:40px}}
+@media(max-width:360px){.contact-links a>.contact-label{font-size:14px;letter-spacing:-.2px}}
