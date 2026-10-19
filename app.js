@@ -121,3 +121,22 @@ async function loadVideoParts(item,video,status){
  }
 }
 
+
+/* Hero resume accordion: only one section expanded at a time. */
+const heroPanelButtons=[...document.querySelectorAll('.hero-menu-button')];
+function setHeroPanel(name){
+  const currentlyOpen=heroPanelButtons.find(button=>button.getAttribute('aria-expanded')==='true')?.dataset.panel;
+  const next=currentlyOpen===name?null:name;
+  heroPanelButtons.forEach(button=>{
+    const open=button.dataset.panel===next;
+    button.setAttribute('aria-expanded',String(open));
+    const panel=document.getElementById('hero-'+button.dataset.panel);
+    panel.classList.toggle('is-open',open);
+    panel.inert=!open;
+  });
+}
+heroPanelButtons.forEach(button=>button.addEventListener('click',()=>setHeroPanel(button.dataset.panel)));
+document.querySelectorAll('[data-open-panel]').forEach(link=>link.addEventListener('click',()=>{
+  const name=link.dataset.openPanel;
+  if(heroPanelButtons.find(button=>button.dataset.panel===name)?.getAttribute('aria-expanded')!=='true')setHeroPanel(name);
+}));
