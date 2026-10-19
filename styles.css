@@ -280,3 +280,7 @@ html,body{max-width:100%;overflow-x:clip}
 /* Larger mobile professional title. */
 @media(max-width:720px){.hero-copy .hero-role{font-size:clamp(25px,6.5vw,39px);line-height:1.1;letter-spacing:-.055em}}
 @media(max-width:420px){.hero-copy .hero-role{font-size:clamp(23px,6.35vw,30px)}}
+
+/* Final incremental enlargement for the mobile professional title. */
+@media(max-width:720px){.hero-copy .hero-role{font-size:clamp(27px,7.05vw,42px);line-height:1.08}}
+@media(max-width:420px){.hero-copy .hero-role{font-size:clamp(25px,6.95vw,33px)}}
