@@ -77,7 +77,7 @@ data.groups.forEach(group=>{
     const caption=el('span','project-caption');caption.append(el('span','',item.title),el('span','','↗'));
     card.append(visual,caption);card.addEventListener('click',()=>openProject(item,group));
     const details=el('button','project-details','Что было сделано');details.type='button';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-label','Что было сделано: '+item.title);
-    details.addEventListener('click',()=>openViewer(item.title,'Что было сделано',[el('p','',item.workDone||'Описание задач и результатов будет добавлено вместе с материалами проекта.')]));
+    details.addEventListener('click',()=>openViewer(item.title,'Что было сделано',[el('p','',item.workDone||'Описание появится чуть позже — автор готовит его.')]));
     wrapper.append(card,details);grid.append(wrapper);
   });
   if(!showcase)section.append(header);
@@ -95,7 +95,7 @@ data.articles.forEach((article,index)=>{
  read.addEventListener('click',()=>{const nodes=[];if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;nodes.push(image);}article.paragraphs.forEach(p=>nodes.push(el(p.startsWith('«')?'blockquote':'p','',p)));openViewer(article.title,'Текст',nodes);});
  card.append(cover,heading,read);$('#article-list').append(card);
 });
-data.jobs.forEach(([year,name,role])=>{const job=el('div','job'),body=el('div');body.append(el('h3','',name),el('p','',role));job.append(el('span','job-year',year),body);$('#timeline').append(job);});
+[...data.jobs].sort((a,b)=>parseInt(b[0],10)-parseInt(a[0],10)).forEach(([year,name,role])=>{const job=el('div','job'),body=el('div');body.append(el('h3','',name),el('p','',role));job.append(el('span','job-year',year),body);$('#timeline').append(job);});
 
 
 // Assemble the unchanged MP4 bytes uploaded in transport-sized parts.
@@ -122,21 +122,37 @@ async function loadVideoParts(item,video,status){
 }
 
 
-/* Hero resume accordion: only one section expanded at a time. */
+/* Resume details open in a separate overlay: no page reflow. */
+const resumeDialog=document.getElementById('resume-dialog');
+const resumeClose=resumeDialog.querySelector('.resume-dialog-close');
 const heroPanelButtons=[...document.querySelectorAll('.hero-menu-button')];
-function setHeroPanel(name){
-  const currentlyOpen=heroPanelButtons.find(button=>button.getAttribute('aria-expanded')==='true')?.dataset.panel;
-  const next=currentlyOpen===name?null:name;
-  heroPanelButtons.forEach(button=>{
-    const open=button.dataset.panel===next;
-    button.setAttribute('aria-expanded',String(open));
-    const panel=document.getElementById('hero-'+button.dataset.panel);
-    panel.classList.toggle('is-open',open);
-    panel.inert=!open;
-  });
+function showResumePanel(name){
+ const target=document.getElementById('hero-'+name);
+ if(!target)return;
+ heroPanelButtons.forEach(button=>{
+   const active=button.dataset.panel===name;
+   button.setAttribute('aria-expanded',String(active));
+ });
+ resumeDialog.querySelectorAll('.hero-panel').forEach(panel=>{
+   const active=panel===target;
+   panel.classList.toggle('is-open',active);
+   panel.inert=!active;
+ });
+ if(!resumeDialog.open)resumeDialog.showModal();
+ resumeDialog.scrollTop=0;
 }
-heroPanelButtons.forEach(button=>button.addEventListener('click',()=>setHeroPanel(button.dataset.panel)));
-document.querySelectorAll('[data-open-panel]').forEach(link=>link.addEventListener('click',()=>{
-  const name=link.dataset.openPanel;
-  if(heroPanelButtons.find(button=>button.dataset.panel===name)?.getAttribute('aria-expanded')!=='true')setHeroPanel(name);
+heroPanelButtons.forEach(button=>button.addEventListener('click',()=>showResumePanel(button.dataset.panel)));
+resumeClose.addEventListener('click',()=>resumeDialog.close());
+resumeDialog.addEventListener('click',event=>{
+ if(event.target===resumeDialog){
+  const box=resumeDialog.getBoundingClientRect();
+  if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)resumeDialog.close();
+ }
+});
+resumeDialog.addEventListener('close',()=>{
+ heroPanelButtons.forEach(button=>button.setAttribute('aria-expanded','false'));
+});
+document.querySelectorAll('[data-open-panel]').forEach(link=>link.addEventListener('click',event=>{
+ event.preventDefault();
+ showResumePanel(link.dataset.openPanel);
 }));
