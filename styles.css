@@ -284,3 +284,20 @@ html,body{max-width:100%;overflow-x:clip}
 /* Final incremental enlargement for the mobile professional title. */
 @media(max-width:720px){.hero-copy .hero-role{font-size:clamp(27px,7.05vw,42px);line-height:1.08}}
 @media(max-width:420px){.hero-copy .hero-role{font-size:clamp(25px,6.95vw,33px)}}
+
+/* Desktop navigation matches the refined mobile outlined tabs. */
+@media(min-width:721px){
+ .header{gap:18px}
+ .header nav{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:nowrap}
+ .header nav a{display:flex;align-items:center;justify-content:center;min-height:43px;padding:10px 15px;white-space:nowrap;font-size:clamp(13px,1.12vw,16px);font-weight:700;line-height:1.15;letter-spacing:-.025em;border:1px solid #c7c5bf;border-radius:5px;background:#faf9f6;box-shadow:0 2px 0 #dedbd5,0 3px 7px #1717170b;transition:color .2s,border-color .2s,box-shadow .2s,transform .2s}
+ .header nav a:hover,.header nav a:focus-visible{color:var(--orange);border-color:var(--orange);box-shadow:0 2px 0 #ffc5b1,0 4px 10px #17171712}
+ .header nav a:active{transform:translateY(2px);box-shadow:none}
+ .contact-title h2{font-size:clamp(40px,5.1vw,72px);line-height:.96}
+ .contact-title>span{font-size:70px}
+}
+@media(min-width:721px) and (max-width:1050px){
+ .header nav{gap:5px}
+ .header nav a{padding:9px 10px;font-size:13px}
+ .header .logo{font-size:35px}
+ .header-cta{padding:13px 15px}
+}
