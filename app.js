@@ -54,7 +54,7 @@ data.groups.forEach(group=>{
   const section=el('div','project-group'+(showcase?' showcase':'')+(group.featuredHeading?' production':''));
   const header=el('div','group-header');
   const heading=el('h3','group-title',group.title+' ');
-  heading.append(el('span','count','/ '+String(group.items.length).padStart(2,'0')));header.append(heading);
+  header.append(heading);if(group.featuredHeading)header.append(el('span','rule'));
   const grid=el('div','project-grid'+(group.items.length===2?' two':''));
   group.items.forEach(item=>{
     const wrapper=el('article','project-item');
@@ -87,10 +87,10 @@ data.articles.forEach((article,index)=>{
  const card=el('article','text-card');
  const cover=el('div','text-cover');
  if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;image.loading='lazy';cover.append(image);}
- else {cover.append(el('span','text-number',String(index+1).padStart(2,'0')),el('span','text-placeholder','Макет и текст скоро появятся'));}
+ else {cover.append(el('span','text-placeholder','Макет и текст скоро появятся'));}
  const heading=el('h3','',article.title);
  const read=el('button','text-read',article.pending?'Скоро':'Читать текст ↗');read.type='button';read.disabled=!!article.pending;
- read.addEventListener('click',()=>{const nodes=[];if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;nodes.push(image);}article.paragraphs.forEach(p=>nodes.push(el('p','',p)));openViewer(article.title,'Текст',nodes);});
+ read.addEventListener('click',()=>{const nodes=[];if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;nodes.push(image);}article.paragraphs.forEach(p=>nodes.push(el(p.startsWith('«')?'blockquote':'p','',p)));openViewer(article.title,'Текст',nodes);});
  card.append(cover,heading,read);$('#article-list').append(card);
 });
 data.jobs.forEach(([year,name,role])=>{const job=el('div','job'),body=el('div');body.append(el('h3','',name),el('p','',role));job.append(el('span','job-year',year),body);$('#timeline').append(job);});
