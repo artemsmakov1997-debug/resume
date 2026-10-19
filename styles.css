@@ -174,3 +174,39 @@ html,body{max-width:100%;overflow-x:clip}
  .dialog-top{padding:10px 12px}
 }
 @media(prefers-reduced-motion:reduce){.hero-menu .button{transition:none}}
+
+/* Consistent vector arrows instead of platform-dependent Unicode emoji. */
+.css-arrow{display:inline-block!important;position:relative;flex:0 0 auto;width:16px;height:16px;font-size:0!important;line-height:0!important;color:inherit;background:transparent!important;border:0!important}
+.css-arrow::before{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;border-top:2px solid currentColor;border-right:2px solid currentColor}
+.css-arrow::after{content:"";position:absolute;right:2px;top:3px;width:15px;height:2px;background:currentColor;transform:rotate(-45deg);transform-origin:right center}
+.project-caption .css-arrow{margin-top:4px}
+.preview-expand.css-arrow{width:28px;height:28px;display:grid!important;place-items:center;border:1px solid #ffffff70!important;border-radius:50%;background:#ffffff25!important}
+.preview-expand.css-arrow::before{right:8px;top:8px;width:8px;height:8px;border-width:1.5px}
+.preview-expand.css-arrow::after{right:8px;top:9px;width:11px;height:1.5px}
+.contact-title>.css-arrow{width:58px;height:58px;margin:10px 12px}
+.contact-title>.css-arrow::before{right:0;top:0;width:34px;height:34px;border-width:6px}
+.contact-title>.css-arrow::after{right:2px;top:6px;width:50px;height:6px}
+.contact-links .css-arrow{width:15px;height:15px;color:var(--orange)!important}
+.contact-links .css-arrow::before{right:3px;top:3px;width:7px;height:7px;border-width:1.5px}
+.contact-links .css-arrow::after{right:3px;top:4px;width:10px;height:1.5px}
+.arrow-link::after{content:"";width:11px;height:11px;display:inline-block;flex-shrink:0;margin-left:10px;background:linear-gradient(135deg,transparent 43%,currentColor 44%,currentColor 55%,transparent 56%) center/100% 100% no-repeat;border-top:2px solid currentColor;border-right:2px solid currentColor;vertical-align:middle}
+@media(max-width:720px){
+ .header nav{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:100%;padding:14px 0 4px;align-items:center;justify-content:stretch}
+ .header nav a{font-size:clamp(11px,2.95vw,14px);font-weight:600;letter-spacing:-.025em;text-align:center;min-width:0;padding:10px 1px;white-space:nowrap}
+ /* Horizontal, touch-first carousels: swipe to next card; never move the document sideways. */
+ #article-list,.video-section .production .project-grid{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,84%);grid-template-columns:none!important;gap:15px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;-webkit-overflow-scrolling:touch;padding:0 12% 16px 2px;scrollbar-width:thin;scrollbar-color:var(--orange) transparent}
+ #article-list>.text-card,.video-section .production .project-grid>.project-item{scroll-snap-align:start;scroll-snap-stop:always;min-width:0}
+ #article-list .text-cover{aspect-ratio:1;max-height:360px}
+ #article-list .text-card h3{font-size:19px}
+ #article-list .text-read{font-size:14px}
+ .video-section .production .project-grid{margin-top:20px}
+ .video-section .production .project-item .project-caption{font-size:18px}
+ .contact-title>.css-arrow{width:38px;height:38px;margin:10px 4px}
+ .contact-title>.css-arrow::before{width:24px;height:24px;border-width:4px}
+ .contact-title>.css-arrow::after{width:36px;height:4px;top:4px}
+}
+@media(max-width:420px){
+ .header nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;justify-content:stretch}
+ .header nav a{font-size:clamp(10px,2.8vw,12px);padding:10px 0}
+ #article-list,.video-section .production .project-grid{grid-auto-columns:minmax(0,88%);padding-right:8%}
+}
