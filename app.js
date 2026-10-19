@@ -55,12 +55,9 @@ data.groups.forEach(group=>{
   const header=el('div','group-header');
   const heading=el('h3','group-title',group.title+' ');
   heading.append(el('span','count','/ '+String(group.items.length).padStart(2,'0')));header.append(heading);
-  if(showcase){
-    previewToggle=el('button','preview-toggle');previewToggle.type='button';
-    previewToggle.addEventListener('click',()=>{previewsPaused=!previewsPaused;updatePreviewPlayback();});header.append(previewToggle);
-  }
   const grid=el('div','project-grid'+(group.items.length===2?' two':''));
   group.items.forEach(item=>{
+    const wrapper=el('article','project-item');
     const card=el('button','project'+(group.type==='video'?' video':''));
     card.type='button';card.setAttribute('aria-label','Открыть: '+item.title);card.setAttribute('aria-haspopup','dialog');
     const visual=el('span','project-visual');
@@ -76,13 +73,26 @@ data.groups.forEach(group=>{
       if(group.type==='video')visual.append(el('span','play','▶'));
     }
     const caption=el('span','project-caption');caption.append(el('span','',item.title),el('span','','↗'));
-    card.append(visual,caption);card.addEventListener('click',()=>openProject(item,group));grid.append(card);
+    card.append(visual,caption);card.addEventListener('click',()=>openProject(item,group));
+    const details=el('button','project-details','Что было сделано');details.type='button';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-label','Что было сделано: '+item.title);
+    details.addEventListener('click',()=>openViewer(item.title,'Что было сделано',[el('p','',item.workDone||'Описание задач и результатов будет добавлено вместе с материалами проекта.')]));
+    wrapper.append(card,details);grid.append(wrapper);
   });
-  section.append(header,grid);$('#project-groups').append(section);
+  if(!showcase)section.append(header);
+  section.append(grid);$('#project-groups').append(section);
 });
 updatePreviewPlayback();
 
-data.articles.forEach(article=>{const row=el('button','article-row');row.type='button';row.setAttribute('aria-haspopup','dialog');const genre=el('span','article-genre',article.genre),body=el('span','article-copy'),preview=el('span','article-preview'),inner=el('span','article-preview-inner');inner.append(el('p','',article.excerpt),el('span','read-more','Читать полностью ↗'));preview.append(inner);body.append(el('span','article-title',article.title),preview);row.append(genre,body,el('span','article-arrow','→'));row.addEventListener('click',()=>{const nodes=[];if(article.demo)nodes.push(el('p','demo-label','Демонстрационный материал. Не является опубликованной авторской работой.'));article.paragraphs.forEach(p=>nodes.push(el('p','',p)));openViewer(article.title,article.genre,nodes);});$('#article-list').append(row);});
+data.articles.forEach((article,index)=>{
+ const card=el('article','text-card');
+ const cover=el('div','text-cover');
+ if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;image.loading='lazy';cover.append(image);}
+ else {cover.append(el('span','text-number',String(index+1).padStart(2,'0')),el('span','text-placeholder','Макет и текст скоро появятся'));}
+ const heading=el('h3','',article.title);
+ const read=el('button','text-read',article.pending?'Скоро':'Читать текст ↗');read.type='button';read.disabled=!!article.pending;
+ read.addEventListener('click',()=>{const nodes=[];if(article.image){const image=el('img');image.src=article.image;image.alt=article.title;nodes.push(image);}article.paragraphs.forEach(p=>nodes.push(el('p','',p)));openViewer(article.title,'Текст',nodes);});
+ card.append(cover,heading,read);$('#article-list').append(card);
+});
 data.jobs.forEach(([year,name,role])=>{const job=el('div','job'),body=el('div');body.append(el('h3','',name),el('p','',role));job.append(el('span','job-year',year),body);$('#timeline').append(job);});
 
 
